@@ -1,0 +1,23 @@
+{
+    "Sentiment": "POSITIVE",
+    "SentimentScore": {
+        "Positive": 0.9825301766395569,
+        "Negative": 0.00034822686575353146,
+        "Neutral": 0.017063843086361885,
+        "Mixed": 5.778960621682927e-05
+    },
+    "KeyPhrases": [
+        {
+            "Score": 1.0,
+            "Text": "ハンズオン",
+            "BeginOffset": 0,
+            "EndOffset": 5
+        },
+        {
+            "Score": 0.9999998807907104,
+            "Text": "手",
+            "BeginOffset": 14,
+            "EndOffset": 15
+        }
+    ]
+}

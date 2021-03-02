@@ -1,0 +1,173 @@
+{
+    "result": {
+        "transcirbe_result": {
+            "jobName": "20210215051656_Transcription",
+            "accountId": "248968340359",
+            "results": {
+                "transcripts": [
+                    {
+                        "transcript": "ハンズオン 順調 です か 手 を 動かす の 楽しい です よ ね"
+                    }
+                ],
+                "items": [
+                    {
+                        "start_time": "0.04",
+                        "end_time": "0.71",
+                        "alternatives": [
+                            {
+                                "confidence": "0.9967",
+                                "content": "ハンズオン"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "0.71",
+                        "end_time": "1.23",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "順調"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "1.23",
+                        "end_time": "1.5",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "です"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "1.5",
+                        "end_time": "1.74",
+                        "alternatives": [
+                            {
+                                "confidence": "0.9985",
+                                "content": "か"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "2.16",
+                        "end_time": "2.32",
+                        "alternatives": [
+                            {
+                                "confidence": "0.9958",
+                                "content": "手"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "2.32",
+                        "end_time": "2.51",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "を"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "2.51",
+                        "end_time": "3.02",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "動かす"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "3.02",
+                        "end_time": "3.21",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "の"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "3.4",
+                        "end_time": "3.94",
+                        "alternatives": [
+                            {
+                                "confidence": "0.9989",
+                                "content": "楽しい"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "3.94",
+                        "end_time": "4.22",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "です"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "4.22",
+                        "end_time": "4.39",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "よ"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    },
+                    {
+                        "start_time": "4.39",
+                        "end_time": "4.64",
+                        "alternatives": [
+                            {
+                                "confidence": "1.0",
+                                "content": "ね"
+                            }
+                        ],
+                        "type": "pronunciation"
+                    }
+                ]
+            },
+            "status": "COMPLETED"
+        },
+        "comprehend_result": {
+            "Sentiment": "POSITIVE",
+            "SentimentScore": {
+                "Positive": 0.9825301766395569,
+                "Negative": 0.00034822686575353146,
+                "Neutral": 0.017063843086361885,
+                "Mixed": 5.778960621682927e-05
+            },
+            "KeyPhrases": [
+                {
+                    "Score": 1.0,
+                    "Text": "ハンズオン",
+                    "BeginOffset": 0,
+                    "EndOffset": 5
+                },
+                {
+                    "Score": 0.9999998807907104,
+                    "Text": "手",
+                    "BeginOffset": 14,
+                    "EndOffset": 15
+                }
+            ]
+        }
+    }
+}
