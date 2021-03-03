@@ -1,10 +1,4 @@
 import base64
-import datetime
-import io
-import json
-import os
-import urllib.parse
-from cgi import FieldStorage
 import boto3
 
 s3 = boto3.resource(
