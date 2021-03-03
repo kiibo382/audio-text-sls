@@ -64,8 +64,6 @@ custom:
     types:
       - "*/*"
   alerts:
-    stages:
-      - dev
     topics:
       alarm:
         topic: ${self:service}-${opt:stage, self:provider.stage}-alarm
