@@ -67,8 +67,8 @@ serverless.yamlに
 
 ```yaml
 provider:
-	environment:
-		RECORDS_BUCKET_NAME3: ${env:RECORDS_BUCKET_NAME3}
+  environment:
+	RECORDS_BUCKET_NAME3: ${env:RECORDS_BUCKET_NAME3}
 
 .
 .
