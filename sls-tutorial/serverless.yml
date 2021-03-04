@@ -16,7 +16,7 @@ provider:
   profile: profile
   environment:
     # bucket_name に文字起こししたいファイルのあるバケット名を記載。
-    RECORDS_BUCKET_NAME1: bucket_name
+    RECORDS_BUCKET_NAME1: ${self:service}-${opt:stage, self:provider.stage}-records-bucket1
     TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
   deploymentBucket:
     name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket

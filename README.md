@@ -3,7 +3,7 @@
 
 <br>local環境はlocalディレクトリ
 <br>AWS環境はcloudディレクトリ
-<br>sls_tutorialディレクトリはserverless frameworkチュートリアル用
+<br>sls-tutorialディレクトリはserverless frameworkチュートリアル用
 
 
 ## 前提条件
@@ -33,7 +33,7 @@ npm install -g serverless
 ```bash
 npm install
 
-# その後、設定の調整（profileやバケット名）を行い、下記実行。
+# その後、serverless.ymlにて設定の調整（profileやバケット名）を行い、下記実行。
 sls deploy
 ```
 
@@ -57,7 +57,7 @@ region = ap-northeast-1
 aws_access_key_id=S3RVER
 aws_secret_access_key=S3RVER
 
-# その後、設定の調整（profileやバケット名）を行い、下記実行。
+# その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
 sls offline start
 
 # 疑似S3バケットにwavファイル、jsonファイルをアップロード
@@ -107,7 +107,7 @@ functions:
 ```bash
 npm install
 
-# その後、設定の調整（profileやバケット名）を行い、下記実行。
+# その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
 sls deploy
 ```
 
