@@ -8,7 +8,7 @@ s3 = boto3.client("s3")
 transcribe = boto3.client("transcribe")
 
 
-def lambda_handler(event, context):
+def handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
     key = urllib.parse.unquote_plus(
         event["Records"][0]["s3"]["object"]["key"], encoding="utf-8"

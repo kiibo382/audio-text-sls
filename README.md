@@ -3,6 +3,7 @@
 
 local環境はlocalディレクトリ
 AWS環境はcloudディレクトリ
+sls_tutorialディレクトリはserverless frameworkチュートリアル用
 
 
 ## 前提条件
@@ -26,6 +27,11 @@ git clone some URL（リポジトリは未定）
 
 npm install -g serverless
 ```
+
+### serverless framework 練習用
+
+解説を加え、少し機能を少なくしたバージョン。チュートリアル用に使用してください。
+
 
 ### Local環境
 

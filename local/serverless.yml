@@ -87,20 +87,10 @@ custom:
 package:
   include:
     - src/*
-  # exclude:
-  #   - buckets
-  #   - sample
-  #   - __pycache__
-  #   - "*.sh"
-  #   - .git
-  #   - .gitignore
-  #   - node_modules
-  #   - package.json
-  #   - package-lock.json
 
 functions:
   transcribe1:
-    handler: src/transcribe.lambda_handler
+    handler: src/transcribe.handler
     memorySize: 512
     events:
       - s3:
@@ -109,7 +99,7 @@ functions:
           rules:
             - suffix: .wav
   transcribe2:
-    handler: src/transcribe.lambda_handler
+    handler: src/transcribe.handler
     memorySize: 512
     events:
       - s3:
@@ -118,7 +108,7 @@ functions:
           rules:
             - suffix: .wav
   comprehend:
-    handler: src/comprehend.lambda_handler
+    handler: src/comprehend.handler
     memorySize: 512
     environment:
       SNS_TOPIC_ARN:

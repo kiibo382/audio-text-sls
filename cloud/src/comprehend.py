@@ -18,7 +18,7 @@ def s3_return_body(bucket_name, key):
     return body
 
 
-def lambda_handler(event, context):
+def handler(event, context):
     TRANSCRIBE_BUCKET_NAME = event["Records"][0]["s3"]["bucket"]["name"]
     input_key = urllib.parse.unquote_plus(
         event["Records"][0]["s3"]["object"]["key"], encoding="utf-8"

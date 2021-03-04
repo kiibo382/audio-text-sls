@@ -1,0 +1,70 @@
+service: sls-tutorial
+
+frameworkVersion: "2"
+useDotenv: true
+
+plugins:
+  - serverless-deployment-bucket
+  - serverless-apigw-binary
+
+provider:
+  name: aws
+  runtime: python3.8
+  stage: dev
+  region: ap-northeast-1
+  # 必要なプロファイルを記入
+  profile: profile
+  environment:
+    # bucket_name に文字起こししたいファイルのあるバケット名を記載。
+    RECORDS_BUCKET_NAME1: bucket_name
+    TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
+  deploymentBucket:
+    name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
+  apiGateway:
+    shouldStartNameWithService: true
+  lambdaHashingVersion: 20201221
+  # log保存期間を指定
+  logRetentionInDays: 30
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - s3:GetObject
+            - s3:PutObject
+          Resource:
+            - "arn:aws:s3:::${self:provider.environment.RECORDS_BUCKET_NAME1}/*"
+            - "arn:aws:s3:::${self:provider.environment.TRANSCRIBE_BUCKET_NAME}/*"
+        - Effect: Allow
+          Action:
+            - transcribe:StartTranscriptionJob
+          Resource: "*"
+
+# apigateway のバイナリサポートを有効化
+custom:
+  apigwBinary:
+    types:
+      - "*/*"
+
+package:
+  include:
+    - src/*
+
+functions:
+  transcribe1:
+    handler: src/transcribe.handler
+    memorySize: 512
+    events:
+      - s3:
+          bucket: ${self:provider.environment.RECORDS_BUCKET_NAME1}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .wav
+  records_get:
+    handler: src/records.get
+    memorySize: 512
+    events:
+      - http:
+          path: records/{records_bucket}/{proxy+}
+          method: get
