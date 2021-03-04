@@ -62,7 +62,7 @@ sls offline start
 RECORDS_BUCKET_NAME3=kizawa-sample-dev-records-bucket3
 ```
 
-を追記する。
+等、S3バケット名を追記する。
 
 serverless.yamlに
 
