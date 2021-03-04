@@ -20,8 +20,6 @@ direnvのセットアップ
 
 ```bash
 echo 'export AWS_DEFAULT_PROFILE=必要なprofile' >> ~/.bash_profile
-# 必要なプロファイル例:
-	# ccti-dev, inop-stg
 
 git clone some URL（リポジトリは未定）
 
