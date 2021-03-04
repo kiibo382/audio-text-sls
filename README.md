@@ -79,7 +79,7 @@ sls offline start
 serverless.yml
 ```yaml
 fucntions:
-	transcribe1:
+  transcribe1:
     handler: transcribe.handler
     memorySize: 512
     events:
@@ -89,7 +89,7 @@ fucntions:
           existing: true
           rules:
             - suffix: .wav
-	transcribe2:
+  transcribe2:
     handler: transcribe.handler
     memorySize: 512
     events:
@@ -106,7 +106,7 @@ fucntions:
 
 ```yaml
 fucntions:
-	transcribe1:
+  transcribe1:
     handler: transcribe.handler
     memorySize: 512
     events:
@@ -115,7 +115,7 @@ fucntions:
           event: s3:ObjectCreated:*
           rules:
             - suffix: .wav
-	transcribe2:
+  transcribe2:
     handler: transcribe.handler
     memorySize: 512
     events:
