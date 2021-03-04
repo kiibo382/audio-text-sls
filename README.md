@@ -149,7 +149,7 @@ provider:
 .
 functions:
   transcribe3:
-    handler: transcribe.lambda_handler
+    handler: transcribe.handler
     memorySize: 512
     events:
       - s3:
