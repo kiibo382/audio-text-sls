@@ -137,14 +137,6 @@ functions:
 
 resources:
   Resources:
-    S3AudioBucket1:
-      Type: "AWS::S3::Bucket"
-      Properties:
-        BucketName: ${env:RECORDS_BUCKET_NAME1}
-    S3AudioBucket2:
-      Type: "AWS::S3::Bucket"
-      Properties:
-        BucketName: ${env:RECORDS_BUCKET_NAME2}
     S3ComprehendBucket:
       Type: "AWS::S3::Bucket"
       Properties:

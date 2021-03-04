@@ -16,7 +16,7 @@ provider:
   profile: profile
   environment:
     # bucket_name に文字起こししたいファイルのあるバケット名を記載。
-    RECORDS_BUCKET_NAME1: ${self:service}-${opt:stage, self:provider.stage}-records-bucket1
+    RECORDS_BUCKET_NAME1: bucket_name
     TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
   deploymentBucket:
     name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
@@ -68,3 +68,10 @@ functions:
       - http:
           path: records/{records_bucket}/{proxy+}
           method: get
+
+resources:
+  Resources:
+    S3TranscribeBucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: ${self:provider.environment.TRANSCRIBE_BUCKET_NAME}

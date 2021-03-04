@@ -1,4 +1,8 @@
 # Serverless Application
+
+
+
+## 構成は以下
 ![serverless](https://user-images.githubusercontent.com/64523345/109884508-7006f000-7cc0-11eb-97d7-ee644da98239.png)
 
 <br>local環境はlocalディレクトリ
@@ -70,8 +74,61 @@ sls offline start
 
 ### AWS環境
 
-処理する音声バケットは現状2つ。増やす場合、
+処理する音声バケットは現状2つ。既存のS3バケットを想定しています。新規に作る場合、
 
+serverless.yml
+```yaml
+fucntions:
+	transcribe1:
+    handler: transcribe.handler
+    memorySize: 512
+    events:
+      - s3:
+          bucket: ${env:RECORDS_BUCKET_NAME1}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .wav
+	transcribe2:
+    handler: transcribe.handler
+    memorySize: 512
+    events:
+      - s3:
+          bucket: ${env:RECORDS_BUCKET_NAME2}
+          event: s3:ObjectCreated:*
+          existing: true
+          rules:
+            - suffix: .wav
+
+```
+
+から
+
+```yaml
+fucntions:
+	transcribe1:
+    handler: transcribe.handler
+    memorySize: 512
+    events:
+      - s3:
+          bucket: ${env:RECORDS_BUCKET_NAME1}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .wav
+	transcribe2:
+    handler: transcribe.handler
+    memorySize: 512
+    events:
+      - s3:
+          bucket: ${env:RECORDS_BUCKET_NAME2}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .wav
+
+```
+
+に変更してください。<br>
+増やす場合、
 .envファイルに
 
 ```jsx
