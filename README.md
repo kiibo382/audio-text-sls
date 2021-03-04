@@ -25,7 +25,7 @@ direnvのセットアップ
 ```bash
 echo 'export AWS_DEFAULT_PROFILE=必要なprofile' >> ~/.bash_profile
 
-git clone some URL（リポジトリは未定）
+git clone https://github.com/kiibo382/audio-text-sls.git
 
 npm install -g serverless
 ```
@@ -35,6 +35,7 @@ npm install -g serverless
 解説を加え、少し機能を少なくしたバージョン。チュートリアル用にご使用ください。
 
 ```bash
+cd sls-tutorial
 npm install
 
 # その後、serverless.ymlにて設定の調整（profileやバケット名）を行い、下記実行。
@@ -50,6 +51,7 @@ sls deploy
 を済ましておいてください。
 
 ```bash
+cd local
 npm install
 
 # .aws/config　に下記を追記
@@ -162,6 +164,7 @@ functions:
 のように、provider.environmentとfunctionsの2項目追記する。
 
 ```bash
+cd cloud
 npm install
 
 # その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
