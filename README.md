@@ -41,8 +41,9 @@ sls deploy
 
 事前にローカル環境に
  - python のインストール
- - boto3 のインストール
-<br>を済ましておいてください。
+ - boto3 のインストール<br>
+
+を済ましておいてください。
 
 ```bash
 npm install
