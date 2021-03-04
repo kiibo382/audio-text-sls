@@ -28,7 +28,7 @@ npm install -g serverless
 
 ### serverless framework 練習用
 
-解説を加え、機能を少なくしたバージョン。チュートリアル用にご使用ください。
+解説を加え、少し機能を少なくしたバージョン。チュートリアル用にご使用ください。
 
 ```bash
 npm install
@@ -39,19 +39,32 @@ sls deploy
 
 ### Local環境
 
-事前にローカル環境で<br>
+事前にローカル環境に<br>
 python のインストール<br>
 boto3 のインストール<br>
 を済ましておいてください。
 
 ```bash
-echo 'export AWS_DEFAULT_PROFILE=必要なprofile' >> ~/.bash_profile
-# 必要なプロファイル例:
-	# ccti-dev, inop-stg
+npm install
 
-git clone some URL（リポジトリは未定）
+# .aws/config　に下記を追記
+[s3local]
+region = ap-northeast-1
 
-npm install -g serverless
+# .aws/credentials に下記を追記
+[s3local]
+aws_access_key_id=S3RVER
+aws_secret_access_key=S3RVER
+
+# その後、設定の調整（profileやバケット名）を行い、下記実行。
+sls offline start
+
+# 疑似S3バケットにwavファイル、jsonファイルをアップロード
+./upload.sh
+
+# 下記URLにアクセスして動作確認
+# http://localhost:3000/records/{bucket_name}/{key}
+# http://localhost:3000/results/{bucket_name}/{key}
 ```
 
 ### AWS環境
@@ -61,7 +74,7 @@ npm install -g serverless
 .envファイルに
 
 ```jsx
-RECORDS_BUCKET_NAME3=kizawa-sample-dev-records-bucket3
+RECORDS_BUCKET_NAME3=sls-sample-dev-records-bucket3
 ```
 
 等、S3バケット名を追記する。
