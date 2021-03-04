@@ -39,9 +39,9 @@ sls deploy
 
 ### Local環境
 
-事前にローカル環境に<br>
-python のインストール<br>
-boto3 のインストール<br>
+事前にローカル環境に
+ - python のインストール
+ - boto3 のインストール
 を済ましておいてください。
 
 ```bash
