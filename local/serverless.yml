@@ -6,7 +6,6 @@ useDotenv: true
 plugins:
   - serverless-offline
   - serverless-s3-local
-  - serverless-deployment-bucket
   - serverless-apigw-binary
   - serverless-plugin-aws-alerts
 
@@ -22,18 +21,10 @@ provider:
     TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
     COMPREHEND_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-comprehend-bucket
     COMPLETE_SNS_TOPIC: ${self:service}-${opt:stage, self:provider.stage}-complete-topic
-  deploymentBucket:
-    name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
   apiGateway:
     shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
   logRetentionInDays: 30
-  # logs:
-  #   restApi:
-  #     accessLogging: false
-  #     executionLogging: true
-  #     level: ERROR
-  #     fullExecutionData: false
   iam:
     role:
       statements:

@@ -2,7 +2,7 @@
 
 
 ## 構成は以下
-![serverless](https://user-images.githubusercontent.com/64523345/109884508-7006f000-7cc0-11eb-97d7-ee644da98239.png)
+![serverless](https://user-images.githubusercontent.com/64523345/110412110-01b29b00-80cf-11eb-9177-9d6af11d9333.png)
 
 <br>local環境はlocalディレクトリ
 <br>AWS環境はcloudディレクトリ

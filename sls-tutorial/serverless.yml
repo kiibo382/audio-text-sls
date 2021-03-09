@@ -4,7 +4,6 @@ frameworkVersion: "2"
 useDotenv: true
 
 plugins:
-  - serverless-deployment-bucket
   - serverless-apigw-binary
 
 provider:
@@ -18,8 +17,6 @@ provider:
     # bucket_name に文字起こししたいファイルのあるバケット名を記載。
     RECORDS_BUCKET_NAME1: bucket_name
     TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
-  deploymentBucket:
-    name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
   apiGateway:
     shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
