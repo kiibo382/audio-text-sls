@@ -64,8 +64,8 @@ custom:
       alarm:
         topic: ${self:service}-${opt:stage, self:provider.stage}-alarm
         notifications:
-          - protocol: ${env:SNS_PROTOCOL}
-            endpoint: ${env:SNS_ENDPOINT}
+          - protocol: ${env:SNS_ALARM_PROTOCOL}
+            endpoint: ${env:SNS_ALARM_ENDPOINT}
     alarms:
       - functionErrors
       - functionThrottles
@@ -97,7 +97,7 @@ functions:
             - suffix: .wav
   comprehend:
     handler: src/comprehend.handler
-    memorySize: 512o
+    memorySize: 512
     environment:
       SNS_TOPIC_ARN:
         Fn::Join:
@@ -142,5 +142,5 @@ resources:
       Properties:
         TopicName: ${self:provider.environment.COMPLETE_SNS_TOPIC}
         Subscription:
-          - Protocol: ${env:SNS_PROTOCOL}
-            Endpoint: ${env:SNS_ENDPOINT}
+          - Protocol: ${env:SNS_COMPLETE_PROTOCOL}
+            Endpoint: ${env:SNS_COMPLETE_ENDPOINT}
