@@ -62,7 +62,9 @@ custom:
   alerts:
     topics:
       alarm:
-        topic: ${self:service}-${opt:stage, self:provider.stage}-alarm
+        topic: ${self:service}-${opt:stage, self:provider.stage}-alerts-alarm
+        nameTemplate: $[functionName]-$[metricName]-Alarm
+        prefixTemplate: $[stackName]
         notifications:
           - protocol: ${env:SNS_ALARM_PROTOCOL}
             endpoint: ${env:SNS_ALARM_ENDPOINT}
@@ -73,6 +75,11 @@ custom:
 package:
   include:
     - src/*
+  exclude:
+    - node_modules
+    - "*.sh"
+    - "*.dio"
+    - "*.json"
 
 functions:
   transcribe1:
