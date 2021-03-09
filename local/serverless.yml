@@ -17,14 +17,13 @@ provider:
   region: ${env:REGION}
   profile: ${env:PROFILE}
   environment:
-    DEPLOYMENT_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
-    RECORDS_BUCKET_NAME1: ${self:service}-${opt:stage, self:provider.stage}-records-bucket1
-    RECORDS_BUCKET_NAME2: ${self:service}-${opt:stage, self:provider.stage}-records-bucket2
+    RECORDS_BUCKET_NAME1: ${env:RECORDS_BUCKET_NAME1}
+    RECORDS_BUCKET_NAME2: ${env:RECORDS_BUCKET_NAME2}
     TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
     COMPREHEND_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-comprehend-bucket
     COMPLETE_SNS_TOPIC: ${self:service}-${opt:stage, self:provider.stage}-complete-topic
   deploymentBucket:
-    name: ${self:provider.environment.DEPLOYMENT_BUCKET_NAME}
+    name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
   apiGateway:
     shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
@@ -43,8 +42,8 @@ provider:
             - s3:GetObject
             - s3:PutObject
           Resource:
-            - "arn:aws:s3:::${self:provider.environment.RECORDS_BUCKET_NAME1}/*"
-            - "arn:aws:s3:::${self:provider.environment.RECORDS_BUCKET_NAME2}/*"
+            - "arn:aws:s3:::${env:RECORDS_BUCKET_NAME1}/*"
+            - "arn:aws:s3:::${env:RECORDS_BUCKET_NAME2}/*"
             - "arn:aws:s3:::${self:provider.environment.TRANSCRIBE_BUCKET_NAME}/*"
             - "arn:aws:s3:::${self:provider.environment.COMPREHEND_BUCKET_NAME}/*"
         - Effect: Allow
@@ -94,7 +93,7 @@ functions:
     memorySize: 512
     events:
       - s3:
-          bucket: ${self:provider.environment.RECORDS_BUCKET_NAME1}
+          bucket: ${env:RECORDS_BUCKET_NAME1}
           event: s3:ObjectCreated:*
           rules:
             - suffix: .wav
@@ -103,7 +102,7 @@ functions:
     memorySize: 512
     events:
       - s3:
-          bucket: ${self:provider.environment.RECORDS_BUCKET_NAME2}
+          bucket: ${env:RECORDS_BUCKET_NAME2}
           event: s3:ObjectCreated:*
           rules:
             - suffix: .wav
@@ -135,7 +134,7 @@ functions:
             parameters:
               paths:
                 records_bucket: true
-  records_get:
+  records-get:
     handler: src/records.get
     memorySize: 512
     events:

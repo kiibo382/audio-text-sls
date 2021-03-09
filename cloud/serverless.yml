@@ -15,14 +15,13 @@ provider:
   region: ${env:REGION}
   profile: ${env:PROFILE}
   environment:
-    DEPLOYMENT_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
     RECORDS_BUCKET_NAME1: ${env:RECORDS_BUCKET_NAME1}
     RECORDS_BUCKET_NAME2: ${env:RECORDS_BUCKET_NAME2}
     TRANSCRIBE_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-transcribe-bucket
     COMPREHEND_BUCKET_NAME: ${self:service}-${opt:stage, self:provider.stage}-comprehend-bucket
     COMPLETE_SNS_TOPIC: ${self:service}-${opt:stage, self:provider.stage}-complete-topic
   deploymentBucket:
-    name: ${self:provider.environment.DEPLOYMENT_BUCKET_NAME}
+    name: ${self:service}-${opt:stage, self:provider.stage}-deployment-bucket
   apiGateway:
     shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
@@ -127,7 +126,7 @@ functions:
             parameters:
               paths:
                 records_bucket: true
-  records_get:
+  records-get:
     handler: src/records.get
     memorySize: 512
     events:

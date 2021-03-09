@@ -61,7 +61,7 @@ functions:
           existing: true
           rules:
             - suffix: .wav
-  records_get:
+  records-get:
     handler: src/records.get
     memorySize: 512
     events:
