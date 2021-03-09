@@ -24,6 +24,8 @@ direnvのセットアップ
 ```bash
 echo 'export AWS_DEFAULT_PROFILE=必要なprofile' >> ~/.bash_profile
 
+echo 'export AWS_SDK_LOAD_CONFIG=1' >> ~/.bash_profile
+
 git clone https://github.com/kiibo382/audio-text-sls.git
 
 npm install -g serverless
