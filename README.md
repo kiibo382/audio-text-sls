@@ -39,7 +39,7 @@ npm install -g serverless
 cd sls-tutorial
 npm install
 
-# その後、serverless.ymlにて設定の調整（profileやバケット名）を行い、下記実行。
+# その後、serverless.ymlとdelete.shにて設定の調整（profileやバケット名）を行い、下記実行。
 sls deploy
 ```
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 aws --endpoint="http://localhost:4569" \
     s3 cp sample/sample.mp3 s3://${SERVICE_NAME}-${STAGE}-records-bucket1/sample.mp3 \
     --profile s3local
