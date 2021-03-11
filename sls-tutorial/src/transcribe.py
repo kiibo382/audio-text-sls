@@ -15,7 +15,7 @@ def handler(event, context):
 
     try:
         transcribe.start_transcription_job(
-            TranscriptionJobName=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            TranscriptionJobName=datetime.datetime.now().strftime("%Y%m%d%H%M%S%f")
             + "_Transcription",
             LanguageCode="ja-JP",
             Media={
@@ -25,10 +25,7 @@ def handler(event, context):
                 + key
             },
             OutputBucketName=os.environ["TRANSCRIBE_BUCKET_NAME"],
-            OutputKey=bucket
-            + "/"
-            + key[:-4].replace("vpbx*-", "")
-            + "-transcribe.json",
+            OutputKey=bucket + "/" + key[:-4] + "-transcribe.json",
         )
     except Exception as e:
         print(e)
