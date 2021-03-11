@@ -1,5 +1,4 @@
 import boto3
-import datetime
 import os
 import urllib.parse
 
@@ -12,11 +11,11 @@ def handler(event, context):
     key = urllib.parse.unquote_plus(
         event["Records"][0]["s3"]["object"]["key"], encoding="utf-8"
     )
+    path_list = key.split("/")
 
     try:
         transcribe.start_transcription_job(
-            TranscriptionJobName=datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-            + "_Transcription",
+            TranscriptionJobName=path_list[-1] + "_Transcription",
             LanguageCode="ja-JP",
             Media={
                 "MediaFileUri": "https://s3.ap-northeast-1.amazonaws.com/"
