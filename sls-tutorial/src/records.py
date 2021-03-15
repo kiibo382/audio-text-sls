@@ -28,7 +28,7 @@ def get(event, context):
         return {
             "statusCode": 200,
             "headers": {
-                "Content-Type": "audio/*",
+                "Content-Type": "audio/wav",
             },
             "body": records_decode_str,
             "isBase64Encoded": True,

@@ -1,4 +1,3 @@
-import ast
 import json
 import os
 
@@ -25,9 +24,7 @@ def get(event, context):
         body = s3_return_body(
             TRANSCRIBE_BUCKET_NAME, records_bucket + "/" + key + "-transcribe.json"
         )
-        transcribe_dict = ast.literal_eval(
-            body.read().decode("UTF-8")
-        )
+        transcribe_dict = json.loads(body.read().decode("utf-8"))
         transcribe_res = transcribe_dict["results"]["transcripts"]
     except Exception as e:
         print("no such file in the transcribe bucket")
@@ -45,16 +42,18 @@ def get(event, context):
     try:
         response_body = {
             "transcirbe_result": transcribe_res,
-            "comprehend_result": ast.literal_eval(
-                comprehend_data["Body"].read().decode("UTF-8")
+            "comprehend_result": json.loads(
+                comprehend_data["Body"].read().decode("utf-8")
             ),
         }
 
         return {
             "statusCode": 200,
-            "body": json.dumps(response_body),
+            "body": json.dumps(response_body, ensure_ascii=False),
             "isBase64Encoded": False,
-            "headers": {"Content-Type": "application/json"},
+            "headers": {
+                "Content-Type": "application/json;charset=UTF-8",
+            },
         }
 
     except Exception as e:

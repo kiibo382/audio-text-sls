@@ -74,11 +74,10 @@ def handler(event, context):
         )
         message = {
             "default": message_text,
-            "record_path": output_key.replace("-comprehend.json", ".wav"),
-            "result_path": output_key.replace("-comprehend.json", ""),
+            "record_path": "records/" + output_key.replace("-comprehend.json", ".wav"),
+            "result_path": "results/" + output_key.replace("-comprehend.json", ""),
         }
-        message_json = json.dumps(message)
-        topic.publish(Message=message_json, MessageStructure="json")
+        topic.publish(Message=json.dumps(message), MessageStructure="json")
     except Exception as e:
         print("Error send message to SNS")
         print(e)
