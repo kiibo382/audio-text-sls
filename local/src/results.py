@@ -34,7 +34,6 @@ def get(event, context):
         transcribe_res = ""
         for i in transcribe_dict["results"]["transcripts"]:
             transcribe_res += i["transcript"]
-        print(transcribe_res)
     except Exception as e:
         print("no such file in the transcribe bucket")
         raise e

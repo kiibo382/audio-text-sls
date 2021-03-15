@@ -58,7 +58,7 @@ def handler(event, context):
 
     try:
         put_obj = s3.Object(COMPREHEND_BUCKET_NAME, output_key)
-        put_obj.put(Body=json.dumps(res_dict))
+        put_obj.put(Body=json.dumps(res_dict, ensure_ascii=False))
     except Exception as e:
         print("Error upload comprehend data into s3 bucket.")
         print(e)
@@ -66,14 +66,12 @@ def handler(event, context):
 
     try:
         topic = sns.Topic(TOPIC_ARN)
-        message_text = (
-            "records_path: "
-            + output_key.replace("-comprehend.json", ".wav")
-            + "\nresults_path: "
-            + output_key.replace("-comprehend.json", "")
-        )
+        message_text = {
+            "record_path": "records/" + output_key.replace("-comprehend.json", ".wav"),
+            "result_path": "results/" + output_key.replace("-comprehend.json", ""),
+        }
         message = {
-            "default": message_text,
+            "default": json.dumps(message_text),
             "record_path": "records/" + output_key.replace("-comprehend.json", ".wav"),
             "result_path": "results/" + output_key.replace("-comprehend.json", ""),
         }
