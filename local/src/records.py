@@ -1,5 +1,6 @@
 import base64
 import boto3
+import logging
 
 s3 = boto3.resource(
     "s3",
@@ -8,6 +9,9 @@ s3 = boto3.resource(
     aws_secret_access_key="S3RVER",
     region_name="ap-northeast-1",
 )
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def s3_return_body(bucket_name, key):
@@ -23,7 +27,7 @@ def get(event, context):
     try:
         body = s3_return_body(records_bucket, key)
     except Exception as e:
-        print("no such file in the bucket")
+        logger.error("no such file in the bucket")
         raise e
 
     try:
@@ -39,5 +43,5 @@ def get(event, context):
             "isBase64Encoded": True,
         }
     except Exception as e:
-        print(e)
+        logger.error(e)
         raise e

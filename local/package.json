@@ -2,11 +2,16 @@
   "name": "sls-sample",
   "description": "",
   "version": "0.1.0",
+  "scripts": {
+    "sls-offline": "sls offline start"
+  },
   "devDependencies": {
     "serverless-offline": "^6.8.0",
-    "serverless-s3-local": "^0.6.7"
+    "serverless-s3-local": "^0.6.7",
+    "serverless-step-functions-offline": "^2.1.4"
   },
   "dependencies": {
+    "serverless": "^2.28.0",
     "serverless-apigw-binary": "^0.4.4",
     "serverless-deployment-bucket": "^1.3.0",
     "serverless-plugin-aws-alerts": "^1.7.1"

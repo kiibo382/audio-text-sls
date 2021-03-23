@@ -1,8 +1,10 @@
 import base64
-
 import boto3
+import logging
 
 s3 = boto3.resource("s3")
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def s3_return_body(bucket_name, key):
@@ -14,11 +16,11 @@ def s3_return_body(bucket_name, key):
 
 def get(event, context):
     records_bucket = event["pathParameters"]["records_bucket"]
-    key = event["pathParameters"]["proxy"]
+    key = event["pathParameters"]["proxy"] + ".wav"
     try:
         body = s3_return_body(records_bucket, key)
     except Exception as e:
-        print("no such file in the bucket")
+        logger.error("no such file in the bucket")
         raise e
 
     try:
@@ -34,5 +36,5 @@ def get(event, context):
             "isBase64Encoded": True,
         }
     except Exception as e:
-        print(e)
+        logger.error(e)
         raise e

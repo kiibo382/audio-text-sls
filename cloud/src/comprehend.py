@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import urllib.parse
 
@@ -9,6 +10,9 @@ comprehend = boto3.client("comprehend")
 sns = boto3.resource("sns")
 COMPREHEND_BUCKET_NAME = os.environ["COMPREHEND_BUCKET_NAME"]
 TOPIC_ARN = os.environ["SNS_TOPIC_ARN"]
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def s3_return_body(bucket_name, key):
@@ -27,12 +31,12 @@ def handler(event, context):
     try:
         body = s3_return_body(TRANSCRIBE_BUCKET_NAME, input_key)
     except Exception as e:
-        print(
+        logger.error(
             "Error comprehend object {} in bucket {}".format(
                 input_key, TRANSCRIBE_BUCKET_NAME
             )
         )
-        print(e)
+        logger.error(e)
         raise e
 
     try:
@@ -45,8 +49,8 @@ def handler(event, context):
         )
         key_phrases = comprehend.detect_key_phrases(Text=transcript, LanguageCode="ja")
     except Exception as e:
-        print("Error comprehend")
-        print(e)
+        logger.error("Error comprehend")
+        logger.error(e)
         raise e
 
     output_key = input_key.replace("transcribe", "comprehend")
@@ -60,23 +64,25 @@ def handler(event, context):
         put_obj = s3.Object(COMPREHEND_BUCKET_NAME, output_key)
         put_obj.put(Body=json.dumps(res_dict, ensure_ascii=False))
     except Exception as e:
-        print("Error upload comprehend data into s3 bucket.")
-        print(e)
+        logger.error("Error upload comprehend data into s3 bucket.")
+        logger.error(e)
         raise e
 
     try:
         topic = sns.Topic(TOPIC_ARN)
         message_text = {
-            "record_path": "records/" + output_key.replace("-comprehend.json", ".wav"),
+            "cdr_path": "cdr/" + output_key.replace("-comprehend.json", ""),
+            "record_path": "records/" + output_key.replace("-comprehend.json", ""),
             "result_path": "results/" + output_key.replace("-comprehend.json", ""),
         }
         message = {
             "default": json.dumps(message_text),
-            "record_path": "records/" + output_key.replace("-comprehend.json", ".wav"),
+            "cdr_path": "cdr/" + output_key.replace("-comprehend.json", ".wav"),
+            "record_path": "records/" + output_key.replace("-comprehend.json", ""),
             "result_path": "results/" + output_key.replace("-comprehend.json", ""),
         }
         topic.publish(Message=json.dumps(message), MessageStructure="json")
     except Exception as e:
-        print("Error send message to SNS")
-        print(e)
+        logger.error("Error send message to SNS")
+        logger.error(e)
         raise e

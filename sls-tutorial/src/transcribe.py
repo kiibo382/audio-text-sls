@@ -1,10 +1,13 @@
 import boto3
 import datetime
+import logging
 import os
 import urllib.parse
 
 
 transcribe = boto3.client("transcribe")
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def handler(event, context):
@@ -28,6 +31,6 @@ def handler(event, context):
             OutputKey=bucket + "/" + key[:-4] + "-transcribe.json",
         )
     except Exception as e:
-        print(e)
-        print("Error transcribe object {} in bucket {}".format(key, bucket))
+        logger.error(e)
+        logger.error("Error transcribe object {} in bucket {}".format(key, bucket))
         raise e
