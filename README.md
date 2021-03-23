@@ -27,8 +27,6 @@ echo 'export AWS_DEFAULT_PROFILE=必要なprofile' >> ~/.bash_profile
 echo 'export AWS_SDK_LOAD_CONFIG=1' >> ~/.bash_profile
 
 git clone https://github.com/kiibo382/audio-text-sls.git
-
-npm install -g serverless
 ```
 
 ### serverless framework 練習用
@@ -40,7 +38,7 @@ cd sls-tutorial
 npm install
 
 # その後、serverless.ymlとdelete.shにて設定の調整（profileやバケット名）を行い、下記実行。
-sls deploy
+npm run sls-deploy
 ```
 
 ### Local環境
@@ -65,7 +63,7 @@ aws_access_key_id=S3RVER
 aws_secret_access_key=S3RVER
 
 # その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
-sls offline start
+npm run sls-offline
 
 # 疑似S3バケットにwavファイル、jsonファイルをアップロード
 ./upload.sh
@@ -169,7 +167,7 @@ cd cloud
 npm install
 
 # その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
-sls deploy
+npm run sls-deploy
 ```
 
 1. デプロイ後にAWS SNSからメールが届くので、サブスクリプションを許可する。
@@ -183,7 +181,7 @@ sls deploy
 ./delete.sh
 
 # 削除できない場合
-./delete2.sh
+./delete-force.sh
 # または
 aws cloudformation delete-stack --stack-name スタック名
 ```
