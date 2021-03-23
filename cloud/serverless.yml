@@ -22,7 +22,7 @@ provider:
   apiGateway:
     shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
-  logRetentionInDays: 30
+  logRetentionInDays: 90
   iam:
     role:
       statements:
@@ -71,38 +71,50 @@ custom:
     alarms:
       - functionErrors
       - functionThrottles
+  authorizer:
+    name: authorization
+    type: REQUEST
+    identitySource: method.request.header.Authorization
+    resultTtlInSeconds: 0
 
 package:
   include:
-    - src/*
+    - "src/*"
   exclude:
-    - node_modules
+    - node_modules/**
     - "*.sh"
     - "*.dio"
     - "*.json"
 
 functions:
   transcribe1:
+    name: ${self:service}-${opt:stage, self:provider.stage}-transcribe1
     handler: src/transcribe.handler
     memorySize: 512
+    environment:
+      MINIMUM_RECORDS_SIZE: ${env:MINIMUM_RECORDS_SIZE}
     events:
       - s3:
           bucket: ${env:RECORDS_BUCKET_NAME1}
           event: s3:ObjectCreated:*
-          existing: true
+          # existing: true
           rules:
             - suffix: .wav
   transcribe2:
+    name: ${self:service}-${opt:stage, self:provider.stage}-transcribe2
     handler: src/transcribe.handler
     memorySize: 512
+    environment:
+      MINIMUM_RECORDS_SIZE: ${env:MINIMUM_RECORDS_SIZE}
     events:
       - s3:
           bucket: ${env:RECORDS_BUCKET_NAME2}
           event: s3:ObjectCreated:*
-          existing: true
+          # existing: true
           rules:
             - suffix: .wav
   comprehend:
+    name: ${self:service}-${opt:stage, self:provider.stage}-comprehend
     handler: src/comprehend.handler
     memorySize: 512
     environment:
@@ -119,24 +131,56 @@ functions:
           event: s3:ObjectCreated:*
           rules:
             - suffix: -transcribe.json
-  results:
-    handler: src/results.get
+  cdr:
+    name: ${self:service}-${opt:stage, self:provider.stage}-cdr
+    handler: src/cdr.get
     memorySize: 512
+    environment:
+      RDS_ENDPOINT: ${env:RDS_ENDPOINT}
+      RDS_USER_NAME: ${env:RDS_USER_NAME}
+      RDS_USER_PASS: ${env:RDS_USER_PASS}
+      RDS_DB_NAME: ${env:RDS_DB_NAME}
+    vpc:
+      securityGroupIds:
+        - ${env:VPC_SECURITY_GROUP_ID}
+      subnetIds:
+        - ${env:PRIVATE_SUBNET_ID}
     events:
       - http:
-          path: /results/{records_bucket}/{proxy+}
+          path: cdr/{records_bucket}/{proxy+}
           method: get
-          request:
-            parameters:
-              paths:
-                records_bucket: true
-  records-get:
+          authorizer: ${self:custom.authorizer}
+  records:
+    name: ${self:service}-${opt:stage, self:provider.stage}-records
     handler: src/records.get
     memorySize: 512
     events:
       - http:
           path: records/{records_bucket}/{proxy+}
           method: get
+          authorizer: ${self:custom.authorizer}
+  results:
+    name: ${self:service}-${opt:stage, self:provider.stage}-results
+    handler: src/results.get
+    memorySize: 512
+    events:
+      - http:
+          path: results/{records_bucket}/{proxy+}
+          method: get
+          authorizer: ${self:custom.authorizer}
+  authorization:
+    name: ${self:service}-${opt:stage, self:provider.stage}-authorization
+    handler: src/auth.authorization
+    environment:
+      RDS_ENDPOINT: ${env:RDS_ENDPOINT}
+      RDS_USER_NAME: ${env:RDS_USER_NAME}
+      RDS_USER_PASS: ${env:RDS_USER_PASS}
+      RDS_DB_NAME: ${env:RDS_DB_NAME}
+    vpc:
+      securityGroupIds:
+        - ${env:VPC_SECURITY_GROUP_ID}
+      subnetIds:
+        - ${env:PRIVATE_SUBNET_ID}
 
 resources:
   Resources:

@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 import boto3
@@ -7,6 +8,9 @@ TRANSCRIBE_BUCKET_NAME = os.environ["TRANSCRIBE_BUCKET_NAME"]
 COMPREHEND_BUCKET_NAME = os.environ["COMPREHEND_BUCKET_NAME"]
 
 s3 = boto3.resource("s3")
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 def s3_return_body(bucket_name, key):
@@ -25,9 +29,11 @@ def get(event, context):
             TRANSCRIBE_BUCKET_NAME, records_bucket + "/" + key + "-transcribe.json"
         )
         transcribe_dict = json.loads(body.read().decode("utf-8"))
-        transcribe_res = transcribe_dict["results"]["transcripts"]
+        transcribe_res = ""
+        for i in transcribe_dict["results"]["transcripts"]:
+            transcribe_res += i["transcript"]
     except Exception as e:
-        print("no such file in the transcribe bucket")
+        logger.error("no such file in the transcribe bucket")
         raise e
 
     try:
@@ -36,7 +42,7 @@ def get(event, context):
         )
         comprehend_data = comprehend_obj.get()
     except Exception as e:
-        print("no such file in the comprehend bucket")
+        logger.error("no such file in the comprehend bucket")
         raise e
 
     try:
@@ -57,5 +63,5 @@ def get(event, context):
         }
 
     except Exception as e:
-        print(e)
+        logger.error(e)
         raise e

@@ -7,7 +7,6 @@ plugins:
   - serverless-offline
   - serverless-s3-local
   - serverless-apigw-binary
-  - serverless-plugin-aws-alerts
 
 provider:
   name: aws
@@ -50,6 +49,11 @@ custom:
   apigwBinary:
     types:
       - "*/*"
+  authorizer:
+    name: authorization
+    type: "TOKEN"
+    identitySource: method.request.header.Authorization
+    resultTtlInSeconds: 0
 
 package:
   include:
@@ -93,12 +97,14 @@ functions:
     memorySize: 512
     events:
       - http:
-          path: /results/{records_bucket}/{proxy+}
+          path: results/{records_bucket}/{proxy+}
           method: get
           request:
             parameters:
               paths:
                 records_bucket: true
+          authorizer: ${self:custom.authorizer}
+
   records-get:
     handler: src/records.get
     memorySize: 512
@@ -106,6 +112,10 @@ functions:
       - http:
           path: records/{records_bucket}/{proxy+}
           method: get
+          authorizer: ${self:custom.authorizer}
+
+  authorization:
+    handler: src/auth.authorization
 
 resources:
   Resources:

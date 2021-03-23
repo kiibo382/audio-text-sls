@@ -1,4 +1,4 @@
 #!/bin/bash
 
 aws s3 rm s3://sls-tutorial-dev-transcribe-bucket --recursive
-sls remove -v
+npm run sls-remove
