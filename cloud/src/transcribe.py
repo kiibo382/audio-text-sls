@@ -8,7 +8,7 @@ transcribe = boto3.client("transcribe")
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-MINIMUM_RECORDS_SIZE = os.environ["MINIMUM_RECORDS_SIZE"]
+MINIMUM_RECORDS_SIZE = int(os.environ["MINIMUM_RECORDS_SIZE"])
 
 
 def handler(event, context):
@@ -16,9 +16,6 @@ def handler(event, context):
     key = urllib.parse.unquote_plus(
         event["Records"][0]["s3"]["object"]["key"], encoding="utf-8"
     )
-    print("event s3 obj")
-    print(type(event["Records"][0]["s3"]["object"]["size"]))
-    print(event["Records"][0]["s3"]["object"]["size"])
     if event["Records"][0]["s3"]["object"]["size"] < MINIMUM_RECORDS_SIZE:
         raise Exception("Records file is too small.")
     path_list = key.split("/")

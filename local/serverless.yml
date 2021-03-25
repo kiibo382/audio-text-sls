@@ -23,6 +23,12 @@ provider:
     shouldStartNameWithService: true
   lambdaHashingVersion: 20201221
   logRetentionInDays: 30
+  logs:
+    restApi:
+      accessLogging: true
+      executionLogging: true
+      level: ERROR
+      fullExecutionData: false
   iam:
     role:
       statements:

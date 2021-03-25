@@ -39,10 +39,11 @@ def rds_connect():
 def exec_query(uniqueid, connection):
     try:
         with connection:
-            with connection.cursor() as cursor:
+            with connection.cursor(cursor=pymysql.cursors.DictCursorc) as cursor:
                 sql = query.RECORDS_INFO_QUERY
                 cursor.execute(sql, uniqueid)
                 results = cursor.fetchall()
+                logger.info("SUCCESS: execute query succeeded")
                 return results
     except Exception as e:
         logger.error(e)
@@ -56,9 +57,10 @@ def get(event, context):
     query_results = exec_query(uniqueid, connection)
 
     try:
-        response_body = {
-            "records_data": query_results,
-        }
+        for i in query_results:
+            response_body = {
+                "records_data": query_results,
+            }
 
         return {
             "statusCode": 200,

@@ -97,7 +97,7 @@ functions:
       - s3:
           bucket: ${env:RECORDS_BUCKET_NAME1}
           event: s3:ObjectCreated:*
-          existing: true
+          # existing: true
           rules:
             - suffix: .wav
   transcribe2:
@@ -110,7 +110,7 @@ functions:
       - s3:
           bucket: ${env:RECORDS_BUCKET_NAME2}
           event: s3:ObjectCreated:*
-          existing: true
+          # existing: true
           rules:
             - suffix: .wav
   comprehend:
