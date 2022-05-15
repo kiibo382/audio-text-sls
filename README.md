@@ -1,109 +1,82 @@
 # Serverless Application
 
 
-## 構成は以下
+## Architecture
 ![serverless](https://user-images.githubusercontent.com/64523345/110412110-01b29b00-80cf-11eb-9177-9d6af11d9333.png)
 
-<br>local環境はlocalディレクトリ
-<br>AWS環境はcloudディレクトリ
-<br>sls-tutorialディレクトリはserverless frameworkチュートリアル用
+## Setup
+### Installation
+ - Node.js (version 14.40)
+ - aws cli (including profile settings, etc.)
+ - (optional) direnv
+ - python3
+  - boto3
 
-
-## 前提条件
-
-nodejs（version 14.40）のインストール
-
-aws cli のセットアップ（プロファイルの設定等も含む）
-
-direnvのセットアップ
-
-## 構築手順
-
-### 共通
+### Common
 
 ```bash
-echo 'export AWS_DEFAULT_PROFILE=必要なprofile' >> ~/.bash_profile
+echo 'export AWS_DEFAULT_PROFILE=Required profile' >> ~/.bash_profile
 
 echo 'export AWS_SDK_LOAD_CONFIG=1' >> ~/.bash_profile
 
 git clone https://github.com/kiibo382/audio-text-sls.git
 ```
 
-### serverless framework 練習用
+## Usage
 
-解説を加え、少し機能を少なくしたバージョン。チュートリアル用にご使用ください。
+### Tutorial
 
 ```bash
 cd sls-tutorial
 npm install
 
-# その後、serverless.ymlとdelete.shにて設定の調整（profileやバケット名）を行い、下記実行。
+# Then, adjust the settings (profile and bucket name) in serverless.yml and delete.sh, and execute the following.
 npm run sls-deploy
 ```
 
-### Local環境
-
-事前にローカル環境に
- - python のインストール
- - boto3 のインストール<br>
-
-を済ましておいてください。
+### Local
 
 ```bash
 cd local
 npm install
 
-# .aws/config　に下記を追記
+# Add the following to `.aws/config`
 [s3local]
 region = ap-northeast-1
 
-# .aws/credentials に下記を追記
+# Add the following to `.aws/credentials`
 [s3local]
 aws_access_key_id=S3RVER
 aws_secret_access_key=S3RVER
 
-# その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
+# Then, adjust settings (profile and bucket name) in the .env file and execute the following.
 npm run sls-offline
 
-# 疑似S3バケットにwavファイル、jsonファイルをアップロード
+# Upload wav and json files to minio (S3 compatible object storage)
 ./upload.sh
 
-# 下記URLにアクセスして動作確認
+# Access the following URL to check the operation.
 # http://localhost:3000/records/{bucket_name}/{key}
 # http://localhost:3000/results/{bucket_name}/{key}
 ```
 
-### AWS環境
+### Production
 
-処理する音声バケットは現状2つ。既存のS3バケットを想定しています。新規に音声バケットを作る場合、
-
-serverless.yml
-```yaml
-fucntions:
-  transcribe1:
-    handler: transcribe.handler
-    memorySize: 512
-    events:
-      - s3:
-          bucket: ${env:RECORDS_BUCKET_NAME1}
-          event: s3:ObjectCreated:*
-          existing: true
-          rules:
-            - suffix: .wav
-  transcribe2:
-    handler: transcribe.handler
-    memorySize: 512
-    events:
-      - s3:
-          bucket: ${env:RECORDS_BUCKET_NAME2}
-          event: s3:ObjectCreated:*
-          existing: true
-          rules:
-            - suffix: .wav
-
+```bash
+cd cloud
+npm install
+npm run sls-deploy
 ```
+After executing the command, please do the following.
 
-から
+1. after deployment, allow subscriptions you will receive from AWS SNS via email.
+2. upload the wav file to the audio bucket
+3. check if the path is received at the endpoint of the specified protocol (such as email).
+4. access `https://{FQDN of the API Gateway}/{path received}` and confirm that the result is returned.
+
+#### Note
+The voice buckets to be processed are assumed to be two existing S3 buckets.
+If you are creating a new voice bucket, please make sure that your `serverless.yml` is as follows
 
 ```yaml
 fucntions:
@@ -128,17 +101,13 @@ fucntions:
 
 ```
 
-に変更してください。（つまりexisiting: trueを削除する。）<br>
-増やす場合、
-.envファイルに
+To add a bucket, append the name of the S3 bucket to the `.env` file. (See example below.)
 
 ```jsx
 RECORDS_BUCKET_NAME3=sls-sample-dev-records-bucket3
 ```
 
-等、S3バケット名を追記する。
-
-serverless.yamlに
+Also, add the following two items to `serverless.yaml`: provider.environment and functions.
 
 ```yaml
 provider:
@@ -160,28 +129,8 @@ functions:
             - suffix: .wav
 ```
 
-のように、provider.environmentとfunctionsの2項目追記する。
-
-```bash
-cd cloud
-npm install
-
-# その後、.envファイルにて設定の調整（profileやバケット名）を行い、下記実行。
-npm run sls-deploy
-```
-
-1. デプロイ後にAWS SNSからメールが届くので、サブスクリプションを許可する。
-2. 音声バケットにwavファイルをアップロードする
-3. 指定したプロトコル（メール等）のエンドポイントにパスが受信できているか確認。
-4. https://{API Gateway のFQDN}/受信したパス　にアクセスし、結果が返ってくることを確認。
-
-### スタック削除
+### Clean up
 
 ```bash
 ./delete.sh
-
-# 削除できない場合
-./delete-force.sh
-# または
-aws cloudformation delete-stack --stack-name スタック名
 ```
